@@ -22,7 +22,18 @@
 //! image.save("avatar.jpg").unwrap();
 //! ```
 //!
-//! Or, you may manipulate `DynamicImage` according to your needs after building.([Docs](https://docs.rs/image))
+//! Or, you may use the resulting buffer to store the image data in a variable
+//! ```
+//! use image::ImageOutputFormat;
+//! use initials_revamped::AvatarBuilder;
+//! use std::io::Cursor;
+//!
+//! let image = AvatarBuilder::new("Anakin Skywalker")
+//!     .draw();
+//!
+//! let mut raw_bytes: Vec<u8> = Vec::new();
+//! image.write_to(&mut Cursor::new(&mut raw_bytes), ImageOutputFormat::Png)?;
+//! ```
 //!
 //! # Customization
 //!
@@ -43,6 +54,7 @@
 //! |  method | description |
 //! |-----------|-------------|
 //! |  with_font(str) | Font file path(.ttf)  |
+//! |  with_font_data(Vec<u8>) | Font binary data |
 //! |  with_font_color(str)   | Font hex color code  |
 //! |  with_font_scale(f32)  | Uniform scale of the text |
 //! |  with_background_color(str)  | Background hex color code  |
@@ -59,8 +71,11 @@
 //! use initials_revamped::{AvatarBuilder, AvatarResult};
 //!
 //! fn avatar() -> AvatarResult {
+//! 	let custom_font = include_bytes!("fonts/ComicSans.ttf").to_vec();
+//!
 //!	    AvatarBuilder::new("Anaking Skywalker")
 //!         .with_font_color("#000000")?
+//! 		.with_font_data(custom_font)?
 //!         .with_background_color("#FAFAFA")?
 //!         .with_length(1)
 //! }
@@ -71,7 +86,7 @@
 //! }
 //!
 //! ```
-//! - This will export an initials avatar `A` with black font and white background.
+//! - This will export an initials avatar `A` with black font, white background and Comic Sans as its font.
 //!
 //!
 //! # Randomization
