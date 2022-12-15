@@ -66,9 +66,17 @@ impl AvatarBuilder {
     /// Change the font of the avatar text. You need to include `.ttf` file.
     /// Default style is `Roboto Regular`.
     pub fn with_font(mut self, font: &str) -> AvatarResult {
-        let mut f = File::open(font)?;
+        let mut file = File::open(font)?;
         let mut font_data = Vec::new();
-        f.read_to_end(&mut font_data).expect("unable to read data");
+        file.read_to_end(&mut font_data)
+            .expect("unable to read data");
+        self.font_data = font_data;
+        Ok(self)
+    }
+
+    /// Change the font of the avatar text using the font's raw binary.
+    /// Useful when embedding the font data into the binary
+    pub fn with_font_data(mut self, font_data: Vec<u8>) -> AvatarResult {
         self.font_data = font_data;
         Ok(self)
     }

@@ -3,7 +3,7 @@ extern crate initials_revamped;
 use initials_revamped::{AvatarBuilder, AvatarResult};
 
 fn avatar() -> AvatarResult {
-    AvatarBuilder::new("A")
+    AvatarBuilder::new("John Doe")
         .with_length(2)?
         .with_contrast_ratio(3.)
 }
