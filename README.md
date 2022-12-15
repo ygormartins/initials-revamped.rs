@@ -11,13 +11,13 @@
 
 ## Fork To-Do List
 
-- [x] Change lib path from `initials` to `initials-revamped`
+- [x] ~Change lib path from `initials` to `initials-revamped`~
 - [ ] Submit crate to crates.io
-- [x] Use a more readable, fitting font (Roboto)
+- [x] ~Use a more readable, fitting font (Roboto)~
 - [ ] Add support for directly using font bytes content (as opposed to paths)
 - [ ] Update documention to include new features & change outdated info
-- [x] Better integration with the [image](https://crates.io/crates/image) crate
-- [x] Add a `write_to` method to write raw bytes data to an array
+- [x] ~Better integration with the [image](https://crates.io/crates/image) crate~
+- [x] ~Add a `write_to` method to write raw bytes data to an array~
 
 ## Setup and Usage
 
