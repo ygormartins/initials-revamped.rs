@@ -12,7 +12,7 @@
 ## Fork To-Do List
 
 - [x] ~Change lib path from `initials` to `initials-revamped`~
-- [ ] Submit crate to crates.io
+- [x] Submit crate to crates.io
 - [x] ~Use a more readable, fitting font (Roboto)~
 - [x] Add support for directly using font bytes content (as opposed to paths)
 - [x] Update documention to include new features & change outdated info
