@@ -1,7 +1,7 @@
-initials [![Build Status](https://travis-ci.org/sonmezonur/initials.rs.svg?branch=master)](https://travis-ci.org/sonmezonur/initials.rs)
+initials-revamped
 =======
 
-`initials` crate helps to generate customizable avatars with the initial characters from the names.
+`initials-revamped` is a fork from the `initials` crate, that helps to generate customizable avatars with the initial characters from the names.
 
 <p float="center">
   <img src="gen/a.jpg" width="100" height="100"/> 
@@ -10,6 +10,16 @@ initials [![Build Status](https://travis-ci.org/sonmezonur/initials.rs.svg?branc
   <img src="gen/i.jpg" width="100" height="100"/>
 </p>
 
+Fork To-Do List
+--------
+
+- [ ] Change lib path from `initials` to `initials-revamped`
+- [ ] Submit crate to crates.io
+- [ ] Use a more readable, fitting font (probably Roboto)
+- [ ] Add support for directly using font bytes content (as opposed to paths)
+- [ ] Update documention to include new features & change outdated info
+- [ ] Better integration with the [image](https://crates.io/crates/image) crate 
+- [ ] Add a `write_to` method to write raw bytes data to an array
 
 Setup and Usage
 --------
@@ -18,15 +28,11 @@ In your Cargo.toml, add the following:
 
 ```toml
 [dependencies]
-initials = "*"
+initials_revamped = "*"
 ```
 
-Extern `initials` crate and draw the image on your project:
-
 ```rust
-extern crate initials;
-
-use initials::{AvatarBuilder, AvatarResult};
+use initials_crate::{AvatarBuilder, AvatarResult};
 
 fn avatar() -> AvatarResult {
     AvatarBuilder::new("Avatar")
@@ -44,14 +50,18 @@ fn main() {
 
 ```
 
-See [Documentation](https://sonmezonur.github.io/initials.rs)
+See [Documentation](https://ygormartins.github.io/initials.rs) (original docs - still haven't written my own)
 
-Example
+Local Server
 --------
-[App](https://iavatar.herokuapp.com) |
-[Doc](https://github.com/sonmezonur/initials.rs/blob/master/api)
+[Doc](https://github.com/ygormartins/initials-revamped.rs/blob/master/api)
 
 License
 --------
 
 MIT
+
+Credits
+--------
+
+All the credit goes to [Onur Sönmez](https://crates.io/users/sonmezonur), the original creator of this awesome lib.
