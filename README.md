@@ -1,10 +1,10 @@
 # initials-revamped
 
-`initials-revamped` is a fork from the `initials` crate, that helps to generate customizable avatars with the initial characters from the names.
+`initials-revamped` is a fork from the `initials` crate that allows generating customizable avatars with the initial characters from arbitrary name values.
 
 <p float="center">
   <img src="gen/a.jpg" width="100" height="100"/> 
-  <img src="gen/铁.jpg" width="100" height="100" />
+  <img src="gen/ж.jpg" width="100" height="100" />
   <img src="gen/fm.jpg" width="100" height="100"/>
   <img src="gen/i.jpg" width="100" height="100"/>
 </p>
@@ -13,7 +13,7 @@
 
 - [x] Change lib path from `initials` to `initials-revamped`
 - [ ] Submit crate to crates.io
-- [ ] Use a more readable, fitting font (probably Roboto)
+- [x] Use a more readable, fitting font (Roboto)
 - [ ] Add support for directly using font bytes content (as opposed to paths)
 - [ ] Update documention to include new features & change outdated info
 - [x] Better integration with the [image](https://crates.io/crates/image) crate

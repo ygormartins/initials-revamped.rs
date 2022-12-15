@@ -50,7 +50,7 @@ impl AvatarBuilder {
         // default Avatar settings
         AvatarBuilder {
             name: text.to_uppercase(),
-            font_data: include_bytes!("fonts/Hiragino_Sans_GB_W3.ttf").to_vec(),
+            font_data: include_bytes!("fonts/Roboto.ttf").to_vec(),
             font_scale: Scale::uniform(150.0),
             length: 2,
             width: 300,
@@ -64,7 +64,7 @@ impl AvatarBuilder {
     }
 
     /// Change the font of the avatar text. You need to include `.ttf` file.
-    /// Default style is `Hiragino_Sans`.
+    /// Default style is `Roboto Regular`.
     pub fn with_font(mut self, font: &str) -> AvatarResult {
         let mut f = File::open(font)?;
         let mut font_data = Vec::new();

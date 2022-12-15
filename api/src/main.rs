@@ -6,7 +6,7 @@ use actix_web::{
     http::{header, Method, StatusCode},
     middleware, pred, server, App, HttpRequest, HttpResponse, Path, Query, Result, State,
 };
-use initials::{AvatarBuilder, AvatarResult};
+use initials_revamped::{AvatarBuilder, AvatarResult};
 use std::cmp;
 use std::env;
 use std::str;
@@ -86,7 +86,7 @@ fn build_avatar(mut builder: AvatarBuilder, query: Query<AvatarInfo>) -> AvatarR
         .with_blur(query.gb.unwrap_or(1.3))
 }
 
-// serve the avatars using `initials` crate
+// serve the avatars using `initials_revamped` crate
 fn handle_avatar(
     (param, query, state): (Path<String>, Query<AvatarInfo>, State<AppState>),
 ) -> Result<NamedFile> {
