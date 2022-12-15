@@ -54,7 +54,7 @@
 //! |  method | description |
 //! |-----------|-------------|
 //! |  with_font(str) | Font file path(.ttf)  |
-//! |  with_font_data(Vec<u8>) | Font binary data |
+//! |  with_font_data(Vec&lt;u8&gt;) | Font binary data |
 //! |  with_font_color(str)   | Font hex color code  |
 //! |  with_font_scale(f32)  | Uniform scale of the text |
 //! |  with_background_color(str)  | Background hex color code  |
