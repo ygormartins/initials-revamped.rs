@@ -1,6 +1,6 @@
-extern crate initials;
+extern crate initials_revamped;
 
-use initials::{AvatarBuilder, AvatarResult};
+use initials_revamped::{AvatarBuilder, AvatarResult};
 
 fn avatar() -> AvatarResult {
     AvatarBuilder::new("A")

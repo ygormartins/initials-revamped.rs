@@ -1,5 +1,4 @@
-initials-revamped
-=======
+# initials-revamped
 
 `initials-revamped` is a fork from the `initials` crate, that helps to generate customizable avatars with the initial characters from the names.
 
@@ -10,19 +9,17 @@ initials-revamped
   <img src="gen/i.jpg" width="100" height="100"/>
 </p>
 
-Fork To-Do List
---------
+## Fork To-Do List
 
-- [ ] Change lib path from `initials` to `initials-revamped`
+- [x] Change lib path from `initials` to `initials-revamped`
 - [ ] Submit crate to crates.io
 - [ ] Use a more readable, fitting font (probably Roboto)
 - [ ] Add support for directly using font bytes content (as opposed to paths)
 - [ ] Update documention to include new features & change outdated info
-- [ ] Better integration with the [image](https://crates.io/crates/image) crate 
-- [ ] Add a `write_to` method to write raw bytes data to an array
+- [x] Better integration with the [image](https://crates.io/crates/image) crate
+- [x] Add a `write_to` method to write raw bytes data to an array
 
-Setup and Usage
---------
+## Setup and Usage
 
 In your Cargo.toml, add the following:
 
@@ -52,16 +49,14 @@ fn main() {
 
 See [Documentation](https://ygormartins.github.io/initials.rs) (original docs - still haven't written my own)
 
-Local Server
---------
+## Local Server
+
 [Doc](https://github.com/ygormartins/initials-revamped.rs/blob/master/api)
 
-License
---------
+## License
 
 MIT
 
-Credits
---------
+## Credits
 
 All the credit goes to [Onur Sönmez](https://crates.io/users/sonmezonur), the original creator of this awesome lib.

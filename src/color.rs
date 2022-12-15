@@ -1,9 +1,9 @@
 //! Color module that helps generating and operating on rgb colors
+use error::Error;
+use image::Rgba;
+use std::iter::FromIterator;
 use std::str::FromStr;
 use std::u8;
-use std::iter::FromIterator;
-use image::Rgba;
-use error::Error;
 
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub struct RgbColor(u8, u8, u8);
@@ -29,16 +29,11 @@ impl RgbColor {
 
     /// Convert to rgba (including transparency) for image creation
     pub fn to_rgba(self, alpha: u8) -> Rgba<u8> {
-        Rgba {
-            data: [self.0, self.1, self.2, alpha]
-        }
+        Rgba([self.0, self.1, self.2, alpha])
     }
 
     fn calculate_luminance(&self) -> f32 {
-        0.299 * f32::from(self.0) +
-        0.587 * f32::from(self.1) +
-        0.114 * f32::from(self.2) +
-        0.05
+        0.299 * f32::from(self.0) + 0.587 * f32::from(self.1) + 0.114 * f32::from(self.2) + 0.05
     }
 }
 
@@ -57,14 +52,14 @@ impl FromStr for RgbColor {
         if !hex.starts_with('#') {
             return Err(Error::InvalidHexFormat {
                 expected: String::from("Color hex code must start with `#`"),
-                actual: format!("Color hex starts with `{}`", hex.chars().nth(0).unwrap())
+                actual: format!("Color hex starts with `{}`", hex.chars().nth(0).unwrap()),
             });
         }
 
         if hex.len() != 7 {
             return Err(Error::InvalidHexFormat {
                 expected: String::from("Hex code must be `7` characters long. Example: `#00FF00`"),
-                actual: format!("Hex code is `{}` characters long!", hex.len())
+                actual: format!("Hex code is `{}` characters long!", hex.len()),
             });
         }
 
@@ -72,9 +67,9 @@ impl FromStr for RgbColor {
         let raw: Vec<char> = hex.chars().collect();
 
         Ok(RgbColor(
-            u8::from_str_radix(&String::from_iter(&raw[1 .. 3]), 16)?,
-            u8::from_str_radix(&String::from_iter(&raw[3 .. 5]), 16)?,
-            u8::from_str_radix(&String::from_iter(&raw[5 .. 7]), 16)?,
+            u8::from_str_radix(&String::from_iter(&raw[1..3]), 16)?,
+            u8::from_str_radix(&String::from_iter(&raw[3..5]), 16)?,
+            u8::from_str_radix(&String::from_iter(&raw[5..7]), 16)?,
         ))
     }
 }
@@ -117,7 +112,10 @@ mod tests {
     fn test_invalid_hex_with_parse_error() {
         let res: Result<RgbColor, Error> = "#0qfd00".parse();
         assert!(res.is_err());
-        assert_eq!(format!("{}", res.unwrap_err()), "couldn't parse hex value: invalid digit found in string");
+        assert_eq!(
+            format!("{}", res.unwrap_err()),
+            "couldn't parse hex value: invalid digit found in string"
+        );
     }
 
     #[test]
@@ -132,7 +130,7 @@ mod tests {
         let rgb_white = RgbColor(255, 255, 255);
         let rgb_yellow = RgbColor(255, 255, 0);
         assert_eq!(rgb_white.find_ratio(&rgb_yellow).floor(), 1.);
-        let rgb_blue =  RgbColor(0, 0, 255);
+        let rgb_blue = RgbColor(0, 0, 255);
         assert_eq!(rgb_white.find_ratio(&rgb_blue).floor(), 8.);
     }
 }

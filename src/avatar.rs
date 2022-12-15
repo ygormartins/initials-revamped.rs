@@ -1,11 +1,11 @@
 //! Avatar module helps to generate avatars according to the initial names.
-use rusttype::{point, Font, Scale};
-use image::{DynamicImage, Rgba, ImageBuffer, imageops};
-use std::io::prelude::*;
-use std::fs::File;
-use std::cmp;
-use error::Error;
 use color::RgbColor;
+use error::Error;
+use image::{imageops, DynamicImage, ImageBuffer, Rgba};
+use rusttype::{point, Font, Scale};
+use std::cmp;
+use std::fs::File;
+use std::io::prelude::*;
 
 /// Avatar builder that stores the metrics of the image.
 #[derive(Debug)]
@@ -95,21 +95,21 @@ impl AvatarBuilder {
     }
 
     /// Change the length of initials characters taken from the name.
-    /// Default to `2`. 
+    /// Default to `2`.
     pub fn with_length(mut self, length: usize) -> AvatarResult {
         self.length = length;
         Ok(self)
     }
 
     /// Change the width of the avatar.
-    /// Default to `300`. 
+    /// Default to `300`.
     pub fn with_width(mut self, width: u32) -> AvatarResult {
         self.width = width;
         Ok(self)
     }
 
     /// Change the height of the avatar.
-    /// Default to `300`. 
+    /// Default to `300`.
     pub fn with_height(mut self, height: u32) -> AvatarResult {
         self.height = height;
         Ok(self)
@@ -122,7 +122,6 @@ impl AvatarBuilder {
         Ok(self)
     }
 
-
     /// Apply gaussian blur to the avatar.
     pub fn with_blur(mut self, blur: f32) -> AvatarResult {
         self.blur = Some(blur);
@@ -132,13 +131,14 @@ impl AvatarBuilder {
     /// Draw the image according to the metrics given.
     pub fn draw(self) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
         // convert font-data vector to rusttype::Font
-        let font = Font::from_bytes(&self.font_data as &[u8]).expect("Error constructing Font");
+        let font = Font::try_from_bytes(&self.font_data as &[u8]).expect("Error constructing Font");
 
         // substract metrics from the font according to the font scale
         let v_metrics = font.v_metrics(self.font_scale);
 
         // get the number of characters from the given name
-        let text: String = self.name
+        let text: String = self
+            .name
             .chars()
             .take(cmp::min(self.length, self.name.len()))
             .collect();
@@ -163,7 +163,7 @@ impl AvatarBuilder {
         let top_padding = (self.height - glyphs_height) / 2;
 
         // create dynamic RGBA image
-        let mut image = DynamicImage::new_rgba8(self.width, self.height).to_rgba();
+        let mut image = DynamicImage::new_rgba8(self.width, self.height).into_rgba8();
 
         // randomize colors if not being settled
         let mut colors = self.randomized_colors;
@@ -183,7 +183,9 @@ impl AvatarBuilder {
 
                     colors = match font_color.find_ratio(&background_color) {
                         // match if contrast ratio between colors is as expected
-                        r if r > self.contrast_ratio || r < 1. / self.contrast_ratio => (false, false),
+                        r if r > self.contrast_ratio || r < 1. / self.contrast_ratio => {
+                            (false, false)
+                        }
                         _ => {
                             if colors.0 | colors.1 {
                                 colors
@@ -192,10 +194,9 @@ impl AvatarBuilder {
                             }
                         }
                     }
-                },
+                }
             }
         }
-
 
         for glyph in glyphs {
             if let Some(bounding_box) = glyph.pixel_bounding_box() {
@@ -212,7 +213,7 @@ impl AvatarBuilder {
 
         for (_, _, pixel) in image.enumerate_pixels_mut() {
             // put background pixels for the uncovered alpha channels
-            if pixel.data[3] == 0 {
+            if pixel[3] == 0 {
                 *pixel = background_color.to_rgba(255)
             }
         }

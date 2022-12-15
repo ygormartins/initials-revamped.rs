@@ -1,19 +1,15 @@
-#[macro_use] extern crate serde_derive;
-
-extern crate serde;
-extern crate actix;
-extern crate actix_web;
-extern crate initials;
+#[macro_use]
+extern crate serde_derive;
 
 use actix_web::{
-    http::{Method, StatusCode, header}, server, App,
-    State, Path, middleware, Query, HttpResponse,
-    HttpRequest, pred, fs::NamedFile, Result,
+    fs::NamedFile,
+    http::{header, Method, StatusCode},
+    middleware, pred, server, App, HttpRequest, HttpResponse, Path, Query, Result, State,
 };
 use initials::{AvatarBuilder, AvatarResult};
-use std::str;
 use std::cmp;
 use std::env;
+use std::str;
 
 // store closure inside App state
 struct AppState {
@@ -27,27 +23,27 @@ fn handle_favicon(_: &HttpRequest<AppState>) -> Result<NamedFile> {
 
 // render static error page for bad request
 fn handle_bad_request() -> Result<NamedFile> {
-    Ok(NamedFile::open("static/HTTP400.html")?
-        .set_status_code(StatusCode::BAD_REQUEST))
+    Ok(NamedFile::open("static/HTTP400.html")?.set_status_code(StatusCode::BAD_REQUEST))
 }
 
 // render static error page for not found
 fn handle_not_found(_: State<AppState>) -> Result<NamedFile> {
-    Ok(NamedFile::open("static/HTTP404.html")?
-        .set_status_code(StatusCode::NOT_FOUND))
+    Ok(NamedFile::open("static/HTTP404.html")?.set_status_code(StatusCode::NOT_FOUND))
 }
 
 // handle index
 fn handle_index(_: State<AppState>) -> Result<HttpResponse> {
     Ok(HttpResponse::Found()
         .header(header::LOCATION, "/img/a")
-        .finish()
-    )
+        .finish())
 }
 
 // server port
 fn server_port() -> u16 {
-    env::var("APP_PORT").ok().and_then(|p| p.parse().ok()).unwrap_or(8000)
+    env::var("APP_PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(8000)
 }
 
 // Deserialize the query for Avatar
@@ -68,7 +64,7 @@ struct AvatarInfo {
     // contrast ratio
     cr: Option<f32>,
     // gaussian blur
-    gb: Option<f32>
+    gb: Option<f32>,
 }
 
 // contruct new avatar according to the queries
@@ -96,13 +92,14 @@ fn handle_avatar(
 ) -> Result<NamedFile> {
     let name = str::replace(&param, "+", " ");
     let builder = (state.builder)(&name);
-    
+
     let avatar = match build_avatar(builder, query) {
         Ok(value) => value,
         Err(_) => return handle_bad_request(),
     };
 
-    let ext: String = avatar.name
+    let ext: String = avatar
+        .name
         .to_lowercase()
         .chars()
         .take(cmp::min(avatar.length, name.len()))
@@ -114,22 +111,26 @@ fn handle_avatar(
     Ok(NamedFile::open(img_path)?)
 }
 
-
 fn main() {
     // create the actor system
     let sys = actix::System::new("initials-avatar");
 
     server::new(|| {
-        App::with_state(AppState{ builder: Box::new(|name| AvatarBuilder::new(name)) })
-            .middleware(middleware::Logger::default())
-            .resource("/", |r| r.method(Method::GET).with(handle_index))
-            .resource("/favicon", |r| r.f(handle_favicon))
-            .resource("/img/{avatar}", |r| r.method(Method::GET).with(handle_avatar))
-            .default_resource(|r| {
-                r.method(Method::GET).with(handle_not_found);
-                r.route().filter(pred::Not(pred::Get())).f(
-                    |_| HttpResponse::MethodNotAllowed());
-            })
+        App::with_state(AppState {
+            builder: Box::new(|name| AvatarBuilder::new(name)),
+        })
+        .middleware(middleware::Logger::default())
+        .resource("/", |r| r.method(Method::GET).with(handle_index))
+        .resource("/favicon", |r| r.f(handle_favicon))
+        .resource("/img/{avatar}", |r| {
+            r.method(Method::GET).with(handle_avatar)
+        })
+        .default_resource(|r| {
+            r.method(Method::GET).with(handle_not_found);
+            r.route()
+                .filter(pred::Not(pred::Get()))
+                .f(|_| HttpResponse::MethodNotAllowed());
+        })
     })
     .bind(format!("0.0.0.0:{}", server_port()))
     .unwrap()

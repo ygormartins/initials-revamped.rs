@@ -1,20 +1,20 @@
 [package]
-name = "initials"
-version = "0.1.3"
+name = "initials-revamped"
+version = "0.1.0"
 description = """
 initials avatar for rust
 """
-authors = ["sonmezonur"]
-documentation = "https://sonmezonur.github.io/initials.rs"
-homepage = "https://github.com/sonmezonur/initials.rs"
-repository = "https://github.com/sonmezonur/initials.rs.git"
+authors = ["ygormartins"]
+documentation = "https://github.com/ygormartins/initials.rs"
+homepage = "https://github.com/ygormartins/initials.rs"
+repository = "https://github.com/ygormartins/initials.rs.git"
 readme = "README.md"
-keywords = ["image", "avatar", "processing", "initial"]
+keywords = ["image", "avatar", "processing", "initial", "revamp"]
 categories = ["multimedia", "multimedia::images", "rendering"]
 license = "MIT"
 
 [lib]
-name = "initials"
+name = "initials_revamped"
 path = "src/lib.rs"
 
 [[bin]]
@@ -23,6 +23,6 @@ path = "bin/main.rs"
 
 [dependencies]
 failure = "0.1.2"
-image = "0.19.0"
-rusttype = "0.6.4"
-rand = "0.5.5"
+image = "0.24.5"
+rusttype = "0.9.3"
+rand = "0.8.5"
